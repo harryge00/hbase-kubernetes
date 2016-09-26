@@ -15,8 +15,10 @@ sed -i "s/@ZNODE_PARENT@/$ZNODE_PARENT/g" $HBASE_CONF_FILE
 cat /dev/null > /opt/hbase/conf/regionservers
 for i in ${HBASE_REGION_LIST[@]}
 do
-   echo $i >> /opt/hbase/conf/regionservers
+   arr=(${i//:/ })
+   echo "${arr[1]}" >> /opt/hbase/conf/regionservers
 done
+
 for i in ${HBASE_MASTER_LIST[@]}
 do
    arr=(${i//:/ })
