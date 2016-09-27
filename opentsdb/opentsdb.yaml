@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: opentsdb-svc
+spec:
+  selector:
+    app: opentsdb
+  ports:
+    - name: port1
+      port: 4242
+      targetPort: 4242
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+    name: opentsdb
+spec:
+  replicas: 1
+  selector:
+    app: opentsdb
+  template:
+    metadata:
+      labels:
+        app: opentsdb
+    spec:
+      containers:
+        - name: opentsdb-node
+          image: index.caicloud.io/caicloud/opentsdb
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 4242
+            name: port1
+          env:
+          - name: HBASE_HOME
+            value: hbase-master-1
+          command: ["tail","-f","/dev/null"]
