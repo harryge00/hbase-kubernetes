@@ -73,7 +73,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: hbase-master-1
+  name: hbase-master-1-pod
   labels:
     app: hbase-master
     server-id: "1"
@@ -115,7 +115,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: hbase-master-2
+  name: hbase-master-2-pod
   labels:
     app: hbase-master
     server-id: "2"
@@ -157,7 +157,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-    name: hbase-region-1
+    name: hbase-region-1-pod
     labels:
       app: hbase-region-1
       server-id: "1"
@@ -199,7 +199,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-    name: hbase-region-2
+    name: hbase-region-2-pod
     labels:
       app: hbase-region-2
       server-id: "2"
