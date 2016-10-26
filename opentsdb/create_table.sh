@@ -1,6 +1,23 @@
 #!/bin/sh
 # Small script to setup the HBase tables used by OpenTSDB.
 
+export HBASE_CONF_FILE=/opt/hbase/conf/hbase-site.xml
+
+sed -i "s/@HDFS_PATH@/$HDFS_PATH/g" $HBASE_CONF_FILE
+sed -i "s/@ZOOKEEPER_IP_LIST@/$ZOOKEEPER_SERVICE_LIST/g" $HBASE_CONF_FILE
+sed -i "s/@ZOOKEEPER_PORT@/$ZOOKEEPER_PORT/g" $HBASE_CONF_FILE
+sed -i "s/@ZNODE_PARENT@/$ZNODE_PARENT/g" $HBASE_CONF_FILE
+cat $HBASE_CONF_FILE
+
+test -n "$HBASE_HOME" || {
+  echo >&2 'The environment variable HBASE_HOME must be set'
+  exit 1
+}
+test -d "$HBASE_HOME" || {
+  echo >&2 "No such directory: HBASE_HOME=$HBASE_HOME"
+  exit 1
+}
+
 TSDB_TABLE=${TSDB_TABLE-'tsdb'}
 UID_TABLE=${UID_TABLE-'tsdb-uid'}
 TREE_TABLE=${TREE_TABLE-'tsdb-tree'}
@@ -21,7 +38,10 @@ esac
 # HBase scripts also use a variable named `HBASE_HOME', and having this
 # variable in the environment with a value somewhat different from what
 # they expect can confuse them in some cases.  So rename the variable.
-exec hbase shell <<EOF
+hbh=$HBASE_HOME
+unset HBASE_HOME
+echo $hbh
+"$hbh/bin/hbase" shell <<EOF
 create '$UID_TABLE',
   {NAME => 'id', COMPRESSION => '$COMPRESSION', BLOOMFILTER => '$BLOOMFILTER'},
   {NAME => 'name', COMPRESSION => '$COMPRESSION', BLOOMFILTER => '$BLOOMFILTER'}

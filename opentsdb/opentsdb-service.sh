@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-if [ -f /usr/share/opentsdb/tools/create_table.sh ]; then
+if [ $CREATE_TABLE == 'Y' ]; then
   sleep 20
   sh /usr/share/opentsdb/tools/create_table.sh
   rm /usr/share/opentsdb/tools/create_table.sh
