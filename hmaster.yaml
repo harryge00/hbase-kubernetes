@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hbase-master-a
+spec:
+  clusterIP: None
+  selector:
+    app: hbase-master-a
+  ports:
+    - name: p1
+      port: 16000
+    - name: p2
+      port: 16010
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hbase-master-b
+spec:
+  clusterIP: None
+  selector:
+    app: hbase-master-b
+  ports:
+    - name: p1
+      port: 16000
+    - name: p2
+      port: 16010
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: hbase-master-a
+  name: hbase-master-a
+spec:
+  containers:
+  - env:
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: HBASE_SERVER_TYPE
+      value: master
+    - name: HDFS_PATH
+      value: mycluster
+    - name: ZOOKEEPER_SERVICE_LIST
+      value: zookeeper-1,zookeeper-2,zookeeper-3
+    - name: ZOOKEEPER_PORT
+      value: "2181"
+    - name: ZNODE_PARENT
+      value: hbase
+    image: cargo.caicloudprivatetest.com/caicloud/hbase
+    imagePullPolicy: Always
+    name: hbase-master-a
+    ports:
+    - containerPort: 16000
+      protocol: TCP
+    - containerPort: 16010
+      protocol: TCP
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: hbase-master-b
+  name: hbase-master-b
+spec:
+  containers:
+  - env:
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: HBASE_SERVER_TYPE
+      value: master
+    - name: HDFS_PATH
+      value: mycluster
+    - name: ZOOKEEPER_SERVICE_LIST
+      value: zookeeper-1,zookeeper-2,zookeeper-3
+    - name: ZOOKEEPER_PORT
+      value: "2181"
+    - name: ZNODE_PARENT
+      value: hbase
+    image: cargo.caicloudprivatetest.com/caicloud/hbase
+    imagePullPolicy: Always
+    name: hbase-master-b
+    ports:
+    - containerPort: 16000
+      protocol: TCP
+    - containerPort: 16010
+      protocol: TCP

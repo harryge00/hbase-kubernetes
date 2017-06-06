@@ -6,24 +6,8 @@
       <value>true</value>
     </property>
     <property>
-      <name>hbase.master.port</name>
-      <value>@HBASE_MASTER_PORT@</value>
-    </property>
-    <property>
-      <name>hbase.master.info.port</name>
-      <value>@HBASE_MASTER_INFO_PORT@</value>
-    </property>
-    <property>
-      <name>hbase.regionserver.port</name>
-      <value>@HBASE_REGION_PORT@</value>
-    </property>
-    <property>
-      <name>hbase.regionserver.info.port</name>
-      <value>@HBASE_REGION_INFO_PORT@</value>
-    </property>
-    <property>
       <name>hbase.rootdir</name>
-      <value>hdfs://@HDFS_PATH@/@ZNODE_PARENT@</value>
+      <value>hdfs://@HDFS_PATH@/hbase/</value>
     </property>
     <property>
       <name>hbase.zookeeper.quorum</name>
@@ -36,5 +20,33 @@
     <property>
       <name>zookeeper.znode.parent</name>
       <value>/@ZNODE_PARENT@</value>
+    </property>
+    <property>
+      <name>zookeeper.session.timeout</name>
+      <value>30</value>
+    </property>
+    <property>
+      <name>hbase.ipc.client.tcpnodelay</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>hbase.ipc.server.tcpnodelay</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>dfs.namenode.avoid.read.stale.datanode</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>dfs.namenode.avoid.write.stale.datanode</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>hbase.regionserver.handler.count</name>
+      <value>64</value>
+    </property>
+    <property>
+      <name>hbase.hstore.min.locality.to.skip.major.compact</name>
+      <value>0.7</value>
     </property>
   </configuration>
