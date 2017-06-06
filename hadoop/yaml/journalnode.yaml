@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop-journalnode-1
+spec:
+  clusterIP: None
+  selector:
+    component: hadoop-journalnode-1
+  ports:
+    - name: web
+      port: 8480
+    - name: ipc
+      port: 8485
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop-journalnode-2
+spec:
+  clusterIP: None
+  selector:
+    component: hadoop-journalnode-2
+  ports:
+    - name: web
+      port: 8480
+    - name: ipc
+      port: 8485
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop-journalnode-0
+spec:
+  clusterIP: None
+  selector:
+    component: hadoop-journalnode-0
+  ports:
+    - name: web
+      port: 8480
+    - name: ipc
+      port: 8485
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hadoop-journalnode-1
+  labels:
+    component: hadoop-journalnode-1
+spec:
+  containers:
+    - name: journalnode
+      env:
+      - name: POD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      image: cargo.caicloudprivatetest.com/caicloud/hadoop-journalnode
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 8485
+        - containerPort: 8480
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hadoop-journalnode-2
+  labels:
+    component: hadoop-journalnode-2
+spec:
+  containers:
+    - name: journalnode
+      env:
+      - name: POD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      image: cargo.caicloudprivatetest.com/caicloud/hadoop-journalnode
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 8485
+        - containerPort: 8480
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hadoop-journalnode-0
+  labels:
+    component: hadoop-journalnode-0
+spec:
+  containers:
+    - name: journalnode
+      env:
+      - name: POD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      image: cargo.caicloudprivatetest.com/caicloud/hadoop-journalnode
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 8485
+        - containerPort: 8480

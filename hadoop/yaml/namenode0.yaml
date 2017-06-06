@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop-namenode-0
+spec:
+  clusterIP: None
+  selector:
+    component: hadoop-namenode-0
+  ports:
+    - name: rpc
+      port: 8020
+    - name: p1
+      port: 50070
+    - name: p2
+      port: 50470
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hadoop-namenode-0
+  labels:
+    component: hadoop-namenode-0
+spec:
+  # nodeSelector:
+  #   kubernetes.io/hostname: kube-node-7
+  containers:
+    - name: namenode
+      image: cargo.caicloudprivatetest.com/caicloud/hadoop-namenode
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 8020
+        - containerPort: 50070
+        - containerPort: 50470
+      env:
+        - name: HDFS_INIT_NAMENODE
+          value: "true"
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name

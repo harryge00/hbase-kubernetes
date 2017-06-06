@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop-datanode-2
+spec:
+  clusterIP: None
+  selector:
+    component: hadoop-datanode-2
+  ports:
+    - name: p1
+      port: 50010
+    - name: p2
+      port: 50020
+    - name: p3
+      port: 50075
+    - name: p4
+      port: 50475
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop-datanode-1
+spec:
+  clusterIP: None
+  selector:
+    component: hadoop-datanode-1
+  ports:
+    - name: p1
+      port: 50010
+    - name: p2
+      port: 50020
+    - name: p3
+      port: 50075
+    - name: p4
+      port: 50475
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hadoop-datanode-1
+  labels:
+    component: hadoop-datanode-1
+spec:
+  # nodeSelector:
+  #   kubernetes.io/hostname: kube-node-6
+  containers:
+    - name: hadoop-datanode-1
+      image: cargo.caicloudprivatetest.com/caicloud/hadoop-datanode
+      imagePullPolicy: Always
+      volumeMounts:
+        - name: hdfs-dn
+          mountPath: /var/hdfs/data
+      ports:
+        - containerPort: 50010
+        - containerPort: 50020
+        - containerPort: 50075
+        - containerPort: 50475
+      env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+  volumes:
+    - hostPath:
+        path: /var/hdfs/data
+      name: hdfs-dn
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hadoop-datanode-2
+  labels:
+    component: hadoop-datanode-2
+spec:
+  # nodeSelector:
+  #   kubernetes.io/hostname: kube-node-7
+  containers:
+    - name: hadoop-datanode-2
+      image: cargo.caicloudprivatetest.com/caicloud/hadoop-datanode
+      imagePullPolicy: Always
+      volumeMounts:
+        - name: hdfs-dn
+          mountPath: /var/hdfs/data
+      ports:
+        - containerPort: 50010
+        - containerPort: 50020
+        - containerPort: 50075
+        - containerPort: 50475
+      env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+  volumes:
+    - hostPath:
+        path: /var/hdfs/data
+      name: hdfs-dn

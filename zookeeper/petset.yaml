@@ -1,0 +1,27 @@
+apiVersion: apps/v1alpha1
+kind: PetSet
+metadata:
+  name: zookeeper
+spec:
+  serviceName: "zookeeper-cluster"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      hostname: "zookeeper"
+      containers:
+      - name: nginx
+        image: index.caicloud.io/caicloud/zookeeper:sysinfra2
+        ports:
+        - containerPort: 2181
+        - containerPort: 2888
+        - containerPort: 3888
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MAX_SERVERS
+            value: '2'

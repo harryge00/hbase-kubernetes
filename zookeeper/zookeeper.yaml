@@ -1,0 +1,155 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-3
+  labels:
+    name: zookeeper-3
+spec:
+  clusterIP: None
+  ports:
+  - name: client
+    port: 2181
+    targetPort: 2181
+  - name: followers
+    port: 2888
+    targetPort: 2888
+  - name: election
+    port: 3888
+    targetPort: 3888
+  selector:
+    name: zookeeper-3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-2
+  labels:
+    name: zookeeper-2
+spec:
+  clusterIP: None
+  ports:
+  - name: client
+    port: 2181
+    targetPort: 2181
+  - name: followers
+    port: 2888
+    targetPort: 2888
+  - name: election
+    port: 3888
+    targetPort: 3888
+  selector:
+    name: zookeeper-2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-1
+  labels:
+    name: zookeeper-1
+spec:
+  clusterIP: None
+  ports:
+  - name: client
+    port: 2181
+    targetPort: 2181
+  - name: followers
+    port: 2888
+    targetPort: 2888
+  - name: election
+    port: 3888
+    targetPort: 3888
+  selector:
+    name: zookeeper-1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zookeeper-3
+  labels:
+    name: zookeeper-3
+spec:
+  containers:
+  - name: server
+    image: cargo.caicloudprivatetest.com/caicloud/zookeeper:sysinfra
+    imagePullPolicy: Always
+    env:
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: SERVER_ID
+      value: '3'
+    - name: MAX_SERVERS
+      value: '3'
+    - name: ZOOKEEPER_MEMBER
+      value: 'zookeeper'
+    ports:
+    - containerPort: 2181
+    - containerPort: 2888
+    - containerPort: 3888
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zookeeper-2
+  labels:
+    name: zookeeper-2
+spec:
+  containers:
+  - name: server
+    image: cargo.caicloudprivatetest.com/caicloud/zookeeper:sysinfra
+    imagePullPolicy: Always
+    env:
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: SERVER_ID
+      value: '2'
+    - name: MAX_SERVERS
+      value: '3'
+    - name: ZOOKEEPER_MEMBER
+      value: 'zookeeper'
+    ports:
+    - containerPort: 2181
+    - containerPort: 2888
+    - containerPort: 3888
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zookeeper-1
+  labels:
+    name: zookeeper-1
+spec:
+  containers:
+  - name: server
+    image: cargo.caicloudprivatetest.com/caicloud/zookeeper:sysinfra
+    imagePullPolicy: Always
+    env:
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: SERVER_ID
+      value: '1'
+    - name: MAX_SERVERS
+      value: '3'
+    - name: ZOOKEEPER_MEMBER
+      value: 'zookeeper'
+    ports:
+    - containerPort: 2181
+    - containerPort: 2888
+    - containerPort: 3888
