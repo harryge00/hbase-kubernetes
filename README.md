@@ -10,6 +10,9 @@ Distributed hbase based on hdfs above kubernetes with 2 masters and 2 regionserv
 
 Download hbase from `https://archive.apache.org/dist/hbase/1.2.3/hbase-1.2.3-bin.tar.gz` and copy it into hbase-image
 ```
-# docker build -t index.caicloud.io/caicloud/hbase:sohu .
+# docker build -t index.caicloud.io/caicloud/hbase:sohu hbase-image
 # kubectl create -f hbase.yaml
 ```
+
+
+Feel free to file a issue
